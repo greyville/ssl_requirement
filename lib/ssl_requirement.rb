@@ -22,11 +22,12 @@ require "#{File.dirname(__FILE__)}/url_rewriter"
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 module SslRequirement
   mattr_accessor :ssl_host, :non_ssl_host
-
   mattr_writer :disable_ssl_check, :ssl_all
+
   def self.disable_ssl_check?
     @@disable_ssl_check ||= false
   end
+
   def self.ssl_all?
     @@ssl_all ||= false
   end
@@ -56,7 +57,7 @@ module SslRequirement
   # Returns true if the current action is supposed to run as SSL
   def ssl_required?
     return true if SslRequirement.ssl_all?
-    
+
     required = (self.class.read_inheritable_attribute(:ssl_required_actions) || [])
     except  = self.class.read_inheritable_attribute(:ssl_excepted_actions)
 

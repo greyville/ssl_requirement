@@ -23,7 +23,7 @@ class UrlRewriterTest < Test::Unit::TestCase
 
     SslRequirement.ssl_host = nil
     SslRequirement.non_ssl_host = nil
-    
+
     # puts @url_rewriter.to_s
   end
 
@@ -36,7 +36,7 @@ class UrlRewriterTest < Test::Unit::TestCase
       @rewriter.rewrite(:controller => 'c', :action => 'a', :secure => false, 
                         :only_path => true)
     )
-    
+
     SslRequirement.disable_ssl_check = true
     assert_equal('http://test.host/c/a',
       @rewriter.rewrite(:controller => 'c', :action => 'a', :secure => false)
@@ -46,7 +46,7 @@ class UrlRewriterTest < Test::Unit::TestCase
                         :only_path => true)
     )
   end
-  
+
   def test_rewrite_secure_true
     SslRequirement.disable_ssl_check = false
     assert_equal('https://test.host/c/a',
@@ -55,7 +55,7 @@ class UrlRewriterTest < Test::Unit::TestCase
     assert_equal('https://test.host/c/a',
       @rewriter.rewrite(:controller => 'c', :action => 'a', :secure => true, :only_path => true)
     )
-    
+
     SslRequirement.disable_ssl_check = true
     assert_equal('http://test.host/c/a',
       @rewriter.rewrite(:controller => 'c', :action => 'a', :secure => true)
@@ -64,7 +64,7 @@ class UrlRewriterTest < Test::Unit::TestCase
       @rewriter.rewrite(:controller => 'c', :action => 'a', :secure => true, :only_path => true)
     )
   end
-  
+
   def test_rewrite_secure_not_specified
     SslRequirement.disable_ssl_check = false
     assert_equal('http://test.host/c/a',
@@ -73,7 +73,7 @@ class UrlRewriterTest < Test::Unit::TestCase
     assert_equal('/c/a',
       @rewriter.rewrite(:controller => 'c', :action => 'a', :only_path => true)
     )
-    
+
     SslRequirement.disable_ssl_check = true
     assert_equal('http://test.host/c/a',
       @rewriter.rewrite(:controller => 'c', :action => 'a')
