@@ -54,7 +54,7 @@ module SslRequirement
     @@disable_ssl_check ||= false
   end
 
-  # Returns true if SSL enforced across the whole application.
+  # Returns true if SSL will be enforced across the whole application.
   def self.ssl_all?
     @@ssl_all ||= false
   end
