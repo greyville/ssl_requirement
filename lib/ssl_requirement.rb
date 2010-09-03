@@ -21,17 +21,6 @@ require "#{File.dirname(__FILE__)}/url_rewriter"
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 module SslRequirement
-  mattr_accessor :ssl_host, :non_ssl_host
-  mattr_writer :disable_ssl_check, :ssl_all
-
-  def self.disable_ssl_check?
-    @@disable_ssl_check ||= false
-  end
-
-  def self.ssl_all?
-    @@ssl_all ||= false
-  end
-
   # called when Module is mixed in
   def self.included(controller)
     controller.extend(ClassMethods)
@@ -53,7 +42,23 @@ module SslRequirement
     end
   end
 
+  mattr_accessor :ssl_host, :non_ssl_host
+  mattr_writer :disable_ssl_check, :ssl_all
+
+  protected :ssl_host, :non_ssl_host, :ssl_host=, :non_ssl_host=, :disable_ssl_check=, :ssl_all=
+
   protected
+
+  # Returns true if SSL checks are disabled.
+  def self.disable_ssl_check?
+    @@disable_ssl_check ||= false
+  end
+
+  # Returns true if SSL enforced across the whole application.
+  def self.ssl_all?
+    @@ssl_all ||= false
+  end
+
   # Returns true if the current action is supposed to run as SSL
   def ssl_required?
     return true if SslRequirement.ssl_all?
@@ -77,6 +82,7 @@ module SslRequirement
   NORMAL_PORTS = [80, 443]
 
   private
+
   def ensure_proper_protocol
     return true if SslRequirement.disable_ssl_check?
     return true if ssl_allowed? && !SslRequirement.ssl_all?
