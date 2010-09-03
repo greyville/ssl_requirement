@@ -44,7 +44,7 @@ module SslRequirement
     end
 
     def ssl_exceptions(*actions)
-      write_inheritable_array(:ssl_required_except_actions, actions)
+      write_inheritable_array(:ssl_excepted_actions, actions)
     end
 
     def ssl_allowed(*actions)
@@ -58,7 +58,7 @@ module SslRequirement
     return true if SslRequirement.ssl_all?
     
     required = (self.class.read_inheritable_attribute(:ssl_required_actions) || [])
-    except  = self.class.read_inheritable_attribute(:ssl_required_except_actions)
+    except  = self.class.read_inheritable_attribute(:ssl_excepted_actions)
 
     unless except
       required.include?(action_name.to_sym)
